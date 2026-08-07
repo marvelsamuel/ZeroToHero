@@ -3,10 +3,9 @@
  * DOM shorthand, formatting, and simple localStorage session helpers.
  */
 
-const ZTH = window.ZTH || {};
-window.ZTH = ZTH;
+window.ZTH = window.ZTH || {};
 
-ZTH.utils = (function () {
+window.ZTH.utils = (function () {
   function qs(sel, root) { return (root || document).querySelector(sel); }
   function qsa(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
 
