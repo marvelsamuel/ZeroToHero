@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Judge Scoring — Zero to Hero</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+  <header class="hq-header">
+    <div class="brand"><span class="spark">⚡</span> ZERO TO HERO</div>
+    <nav class="hq-nav">
+      <a href="leaderboard.html">Leaderboard</a>
+      <span id="judgeName" style="align-self:center;font-weight:700;"></span>
+      <button id="logoutBtn">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <div class="text-center">
+      <span class="judge-role-badge" id="judgeRole"></span>
+    </div>
+
+    <div class="tabs" id="judgeTabs" style="justify-content:center;"></div>
+
+    <div id="judgeFormMount">
+      <div class="flex" style="justify-content:center;padding:40px"><div class="spinner"></div></div>
+    </div>
+  </main>
+
+  <footer class="hq-footer">Zero to Hero Summer Camp &middot; Judge Console</footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/judge.js"></script>
+</body>
+</html>

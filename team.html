@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Details — Zero to Hero</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <header class="hq-header">
+    <div class="brand"><span class="spark">⚡</span> ZERO TO HERO</div>
+    <nav class="hq-nav">
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="login.html">Judge / Admin Login</a>
+    </nav>
+  </header>
+
+  <main class="page-shell" id="teamContent">
+    <div class="panel flex-between" id="teamHero" style="flex-wrap:wrap;">
+      <div class="flex" style="justify-content:center;padding:20px;width:100%"><div class="spinner"></div></div>
+    </div>
+
+    <div class="breakdown-grid" id="breakdownGrid"></div>
+
+    <div class="panel mt-24">
+      <h2>Team Roster</h2>
+      <ul class="roster-list mt-16" id="rosterList"></ul>
+    </div>
+
+    <div class="panel mt-24">
+      <h2>Recent Activity</h2>
+      <div class="activity-feed" id="teamActivityFeed"></div>
+    </div>
+
+    <p class="mt-24"><a href="leaderboard.html">← Back to leaderboard</a></p>
+  </main>
+
+  <footer class="hq-footer">Zero to Hero Summer Camp</footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/teams.js"></script>
+</body>
+</html>

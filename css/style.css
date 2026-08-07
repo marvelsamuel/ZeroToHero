@@ -1,0 +1,361 @@
+/* ==========================================================================
+   Zero to Hero — Core Theme
+   A comic-book / superhero HQ visual language: bold ink outlines, halftone
+   dot texture, starburst rank badges, and a jagged "POW!" accent language
+   used sparingly so it stays legible for kids and volunteers alike.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Baloo+2:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  /* Palette */
+  --hero-red: #E63946;
+  --comic-blue: #1D3557;
+  --comic-blue-light: #2A4A7F;
+  --sunburst-yellow: #FFD60A;
+  --power-purple: #7209B7;
+  --hero-green: #2EC4B6;
+  --mentor-orange: #FF6B35;
+  --panel-cream: #FFF6E0;
+  --paper: #FFFDF7;
+  --ink: #14161A;
+  --white: #FFFFFF;
+  --muted: #6B6455;
+
+  /* Type */
+  --font-display: 'Bangers', cursive;
+  --font-body: 'Baloo 2', 'Segoe UI', sans-serif;
+  --font-data: 'Space Mono', monospace;
+
+  /* Layout */
+  --panel-border: 4px;
+  --radius-panel: 18px;
+  --radius-pill: 999px;
+  --shadow-pop: 6px 6px 0 var(--ink);
+  --shadow-pop-sm: 3px 3px 0 var(--ink);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(circle, rgba(20,22,26,0.08) 1.4px, transparent 1.4px);
+  background-size: 14px 14px;
+  background-color: var(--panel-cream);
+  min-height: 100vh;
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  letter-spacing: 0.5px;
+  line-height: 1.05;
+  margin: 0;
+  color: var(--comic-blue);
+  text-shadow: 2px 2px 0 rgba(20,22,26,0.12);
+}
+
+p, li, label, span, div { font-family: var(--font-body); }
+
+a { color: inherit; text-decoration: none; }
+
+button, input, select, textarea { font-family: var(--font-body); }
+
+/* -------------------------------------------------------------------------
+   Layout shells
+   ------------------------------------------------------------------------- */
+
+.hq-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--comic-blue);
+  border-bottom: var(--panel-border) solid var(--ink);
+  color: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.hq-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--sunburst-yellow);
+  text-shadow: 2px 2px 0 var(--ink);
+}
+
+.hq-header .brand .spark { font-size: 1.4rem; }
+
+.hq-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hq-nav a, .hq-nav button {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--white);
+  background: transparent;
+  border: 2px solid transparent;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.hq-nav a:hover, .hq-nav button:hover,
+.hq-nav a.active {
+  border-color: var(--sunburst-yellow);
+  background: rgba(255,255,255,0.08);
+}
+
+.page-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+.hq-footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* -------------------------------------------------------------------------
+   Comic panel — the signature container used everywhere: team cards, forms,
+   stat blocks. Thick ink border + hard drop shadow = comic-panel feel.
+   ------------------------------------------------------------------------- */
+
+.panel {
+  background: var(--white);
+  border: var(--panel-border) solid var(--ink);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-pop);
+  padding: 20px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.eyebrow {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--power-purple);
+  font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 14px 24px;
+  border-radius: var(--radius-pill);
+  border: 3px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow-pop-sm);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  min-height: 48px;
+}
+
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: var(--shadow-pop-sm); }
+
+.btn-primary { background: var(--hero-red); color: var(--white); }
+.btn-blue { background: var(--comic-blue); color: var(--white); }
+.btn-yellow { background: var(--sunburst-yellow); color: var(--ink); }
+.btn-purple { background: var(--power-purple); color: var(--white); }
+.btn-green { background: var(--hero-green); color: var(--ink); }
+.btn-ghost { background: transparent; box-shadow: none; border-color: rgba(20,22,26,0.25); }
+.btn-lg { font-size: 1.2rem; padding: 18px 30px; min-height: 60px; }
+.btn-block { width: 100%; }
+
+/* -------------------------------------------------------------------------
+   Badges / starburst rank markers
+   ------------------------------------------------------------------------- */
+
+.rank-burst {
+  --burst-color: var(--sunburst-yellow);
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--ink);
+  background: var(--burst-color);
+  clip-path: polygon(50% 0%, 61% 18%, 82% 10%, 82% 32%, 100% 40%, 86% 56%, 96% 76%, 75% 76%, 68% 96%, 50% 82%, 32% 96%, 25% 76%, 4% 76%, 14% 56%, 0% 40%, 18% 32%, 18% 10%, 39% 18%);
+}
+.rank-burst.gold { --burst-color: var(--sunburst-yellow); }
+.rank-burst.silver { --burst-color: #D8D8E0; }
+.rank-burst.bronze { --burst-color: #E0A45C; }
+.rank-burst.plain { --burst-color: var(--panel-cream); font-size: 1.1rem; }
+
+.chip {
+  display: inline-block;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--ink);
+  background: var(--panel-cream);
+}
+.chip.games { background: var(--hero-red); color: var(--white); }
+.chip.bible { background: var(--power-purple); color: var(--white); }
+.chip.individual { background: var(--hero-green); color: var(--ink); }
+.chip.mentor { background: var(--mentor-orange); color: var(--white); }
+
+/* -------------------------------------------------------------------------
+   Score counter (signature element)
+   ------------------------------------------------------------------------- */
+
+.score-counter {
+  font-family: var(--font-data);
+  font-weight: 700;
+  font-size: 2.1rem;
+  color: var(--comic-blue);
+}
+.score-counter.pulse { animation: scorePulse 0.5s ease; }
+@keyframes scorePulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.28); color: var(--hero-red); }
+  100% { transform: scale(1); }
+}
+
+/* -------------------------------------------------------------------------
+   Speech bubble toast (success feedback)
+   ------------------------------------------------------------------------- */
+
+.toast-stack {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.speech-toast {
+  position: relative;
+  background: var(--white);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  padding: 14px 20px;
+  max-width: 280px;
+  font-weight: 700;
+  box-shadow: var(--shadow-pop-sm);
+  animation: bubbleIn 0.25s ease;
+}
+.speech-toast::after {
+  content: '';
+  position: absolute;
+  bottom: -14px;
+  left: 26px;
+  width: 0; height: 0;
+  border: 10px solid transparent;
+  border-top-color: var(--white);
+  filter: drop-shadow(0 2px 0 var(--ink));
+}
+.speech-toast.success { border-color: var(--hero-green); }
+.speech-toast.error { border-color: var(--hero-red); }
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* -------------------------------------------------------------------------
+   Utility
+   ------------------------------------------------------------------------- */
+
+.text-muted { color: var(--muted); }
+.text-center { text-align: center; }
+.flex { display: flex; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-16 { margin-top: 0; margin-bottom: 16px; }
+.hidden { display: none !important; }
+
+.spinner {
+  width: 22px; height: 22px;
+  border: 3px solid rgba(20,22,26,0.15);
+  border-top-color: var(--comic-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Confetti burst on rank change */
+.confetti-piece {
+  position: fixed;
+  top: -20px;
+  width: 10px; height: 14px;
+  z-index: 300;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  to { transform: translateY(110vh) rotate(540deg); opacity: 0.9; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
+
+/* Focus visibility for accessibility (touch-friendly interface, but keyboard use still supported) */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--power-purple);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .hq-header { flex-direction: column; align-items: stretch; }
+  .hq-nav { justify-content: center; }
+  .score-counter { font-size: 1.6rem; }
+}
+
+/* Projector mode — huge text, big cards, for a hall display */
+body.projector-mode {
+  font-size: 1.3rem;
+}
+body.projector-mode .score-counter { font-size: 3.2rem; }
+body.projector-mode h1 { font-size: 3.4rem; }
+body.projector-mode .rank-burst { width: 84px; height: 84px; font-size: 2rem; }

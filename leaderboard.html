@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Leaderboard — Zero to Hero</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <header class="hq-header">
+    <div class="brand"><span class="spark">⚡</span> ZERO TO HERO</div>
+    <nav class="hq-nav">
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+      <a href="login.html">Judge / Admin Login</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <div class="hero-banner">
+      <h1>LIVE LEADERBOARD</h1>
+      <p class="sub" id="lastUpdated">Loading…</p>
+    </div>
+
+    <div class="stat-strip" id="statStrip"></div>
+
+    <div class="leaderboard-grid" id="leaderboardGrid">
+      <div class="flex" style="justify-content:center;padding:40px"><div class="spinner"></div></div>
+    </div>
+
+    <div class="panel mt-24">
+      <div class="panel-header">
+        <h2>Recent Activity</h2>
+        <span class="eyebrow">LIVE FEED</span>
+      </div>
+      <div class="activity-feed" id="activityFeed"></div>
+    </div>
+  </main>
+
+  <div class="projector-toggle-wrap">
+    <button class="btn btn-yellow" id="projectorToggle">🖥️ Projector Mode</button>
+  </div>
+
+  <footer class="hq-footer">Zero to Hero Summer Camp &middot; Refreshes automatically</footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>

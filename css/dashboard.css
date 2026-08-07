@@ -1,0 +1,150 @@
+/* ==========================================================================
+   Dashboard layouts — public leaderboard, team detail, admin overview
+   ========================================================================== */
+
+.hero-banner {
+  text-align: center;
+  padding: 30px 10px 10px;
+}
+.hero-banner h1 { font-size: 3.2rem; }
+.hero-banner .sub { color: var(--muted); font-weight: 600; margin-top: 6px; }
+
+.leaderboard-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.team-row {
+  display: grid;
+  grid-template-columns: 56px 8px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: var(--panel-border) solid var(--ink);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-pop-sm);
+  transition: transform 0.2s ease;
+}
+.team-row:hover { transform: translateX(4px); }
+.team-row.rank-1 { border-color: var(--sunburst-yellow); box-shadow: 5px 5px 0 var(--sunburst-yellow); }
+
+.team-color-bar {
+  width: 8px;
+  align-self: stretch;
+  border-radius: 6px;
+  background: var(--team-color, var(--comic-blue));
+}
+
+.team-row .team-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ink);
+  letter-spacing: 0.5px;
+}
+.team-row .team-meta { color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+
+.team-row .score-col { text-align: right; }
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+.stat-card {
+  background: var(--white);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-pop-sm);
+}
+.stat-card .value { font-family: var(--font-data); font-size: 1.8rem; font-weight: 700; color: var(--comic-blue); }
+.stat-card .label { font-size: 0.78rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.activity-feed { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--panel-cream);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+.activity-item .time { margin-left: auto; font-family: var(--font-data); font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+
+/* Team detail hero */
+.team-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  flex-wrap: wrap;
+}
+.team-hero .emblem {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 4px solid var(--ink);
+  background: var(--team-color, var(--comic-blue));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 2rem;
+}
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.roster-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.roster-list li { padding: 8px 12px; background: var(--panel-cream); border-radius: 10px; border: 2px solid var(--ink); font-weight: 600; }
+
+/* Admin dashboard grid */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 2px solid rgba(20,22,26,0.1);
+}
+.data-table th {
+  font-family: var(--font-data);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+.data-table tr:hover td { background: var(--panel-cream); }
+.table-scroll { overflow-x: auto; }
+
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.tab-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  border: 3px solid var(--ink);
+  background: var(--white);
+  cursor: pointer;
+}
+.tab-btn.active { background: var(--comic-blue); color: var(--white); }
+
+.projector-toggle-wrap { position: fixed; bottom: 20px; right: 20px; z-index: 60; }
+
+/* Confetti / rank-1 celebration on leaderboard */
+.crown-icon { font-size: 1.4rem; }

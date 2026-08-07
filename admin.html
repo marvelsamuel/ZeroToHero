@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Zero to Hero</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+  <header class="hq-header">
+    <div class="brand"><span class="spark">⚡</span> ZERO TO HERO</div>
+    <nav class="hq-nav">
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="judge.html">Judge Console</a>
+      <span id="adminName" style="align-self:center;font-weight:700;"></span>
+      <button id="logoutBtn">Log Out</button>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <div class="flex-between flex-wrap gap-16">
+      <h1>ADMIN HQ</h1>
+      <input type="text" class="search-input" id="globalSearch" placeholder="🔍 Search campers, teams, mentors…">
+    </div>
+    <div id="searchResults" class="panel mt-16 hidden"></div>
+
+    <div class="tabs mt-24" id="adminTabs"></div>
+    <div id="adminMount"></div>
+  </main>
+
+  <footer class="hq-footer">Zero to Hero Summer Camp &middot; Admin Console</footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
