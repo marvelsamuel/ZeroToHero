@@ -6,10 +6,9 @@
  * boundary.
  */
 
-const ZTH = window.ZTH || {};
-window.ZTH = ZTH;
+window.ZTH = window.ZTH || {};
 
-ZTH.auth = (function () {
+window.ZTH.auth = (function () {
   const STORAGE_KEY = 'zth_session';
 
   function getSession() {
