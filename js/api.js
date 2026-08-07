@@ -11,10 +11,9 @@
  * (GitHub Pages, a school laptop opening index.html directly, etc.).
  */
 
-const ZTH = window.ZTH || {};
-window.ZTH = ZTH;
+window.ZTH = window.ZTH || {};
 
-ZTH.api = (function () {
+window.ZTH.api = (function () {
   function getBaseUrl() {
     const url = (window.ZTH_CONFIG && window.ZTH_CONFIG.API_URL) || '';
     if (!url || url.indexOf('PASTE_YOUR') !== -1) {
