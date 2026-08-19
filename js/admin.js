@@ -87,6 +87,35 @@
     });
     mount.appendChild(el('div', { class: 'panel' }, [el('h2', {}, ['Camp Overview']), grid]));
     mount.appendChild(renderUndoPanel());
+    mount.appendChild(renderResetPanel());
+  }
+
+  function renderResetPanel() {
+    const panel = el('div', { class: 'panel mt-24', style: 'border-color:var(--hero-red);box-shadow:6px 6px 0 var(--hero-red);' }, [
+      el('h2', { style: 'color:var(--hero-red);' }, ['⚠️ Danger Zone']),
+      el('p', { class: 'text-muted mt-8' }, ['Permanently clears every Game, Bible, Individual, and Mentor score, and resets every team\u2019s total to 0. Teams, campers, mentors, user accounts, and settings are NOT affected. Use this after testing, before the camp officially starts.'])
+    ]);
+    const confirmInput = el('input', { type: 'text', placeholder: 'Type RESET to confirm', style: 'max-width:220px;' });
+    const resetBtn = el('button', {
+      class: 'btn btn-primary', type: 'button', style: 'background:var(--hero-red);',
+      onclick: async () => {
+        if (confirmInput.value !== 'RESET') { ZTH.utils.toast('Type RESET exactly to confirm.', 'error'); return; }
+        if (!confirm('This will permanently erase ALL scores and reset every team to 0. This cannot be undone. Continue?')) return;
+        resetBtn.disabled = true;
+        try {
+          await ZTH.api.call('resetAllScores', { token: session.token, confirm: confirmInput.value });
+          ZTH.utils.toast('All scores have been reset to 0.', 'success');
+          confirmInput.value = '';
+          renderTab('overview');
+        } catch (err) {
+          ZTH.utils.toast(err.message, 'error');
+        } finally {
+          resetBtn.disabled = false;
+        }
+      }
+    }, ['Reset All Scores']);
+    panel.appendChild(el('div', { class: 'flex gap-12 flex-wrap mt-16' }, [confirmInput, resetBtn]));
+    return panel;
   }
 
   function renderUndoPanel() {
