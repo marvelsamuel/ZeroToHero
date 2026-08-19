@@ -155,18 +155,26 @@
     const wrap = el('div', { class: 'panel judge-shell' });
     wrap.appendChild(el('div', { class: 'panel-header' }, [el('h2', {}, ['🏆 Game Score']), el('span', { class: 'eyebrow' }, ['GAMES'])]));
     wrap.appendChild(fixedPointsBadge(lookups.defaults.game, 'games'));
+    wrap.appendChild(el('p', { class: 'text-muted text-center', style: 'margin-top:-8px;' }, ['On a draw, both teams get the full amount.']));
 
     wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Team A']),
-      el('div', { class: 'team-picker' }, lookups.teams.map((t) => teamButton(t, state.gameTeamA, () => { state.gameTeamA = t.teamId; if (state.gameWinner && state.gameWinner !== t.teamId && state.gameWinner !== state.gameTeamB) state.gameWinner = null; renderActiveForm('game'); })))
+      el('div', { class: 'team-picker' }, lookups.teams.map((t) => teamButton(t, state.gameTeamA, () => { state.gameTeamA = t.teamId; state.gameWinner = null; renderActiveForm('game'); })))
     ]));
     wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Team B']),
-      el('div', { class: 'team-picker' }, lookups.teams.map((t) => teamButton(t, state.gameTeamB, () => { state.gameTeamB = t.teamId; renderActiveForm('game'); })))
+      el('div', { class: 'team-picker' }, lookups.teams.map((t) => teamButton(t, state.gameTeamB, () => { state.gameTeamB = t.teamId; state.gameWinner = null; renderActiveForm('game'); })))
     ]));
 
     if (state.gameTeamA && state.gameTeamB && state.gameTeamA !== state.gameTeamB) {
       const winnerOptions = lookups.teams.filter((t) => t.teamId === state.gameTeamA || t.teamId === state.gameTeamB);
+      const winnerButtons = winnerOptions.map((t) => teamButton(t, state.gameWinner, () => { state.gameWinner = t.teamId; renderActiveForm('game'); }));
+      winnerButtons.push(el('button', {
+        type: 'button',
+        class: 'team-pick-btn' + (state.gameWinner === 'DRAW' ? ' selected' : ''),
+        style: state.gameWinner === 'DRAW' ? '--team-color:#FFD60A' : '',
+        onclick: () => { state.gameWinner = 'DRAW'; renderActiveForm('game'); }
+      }, ['🤝 Draw']));
       wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Winner']),
-        el('div', { class: 'team-picker' }, winnerOptions.map((t) => teamButton(t, state.gameWinner, () => { state.gameWinner = t.teamId; renderActiveForm('game'); })))
+        el('div', { class: 'team-picker' }, winnerButtons)
       ]));
 
       if (mentorQuestions.length) {
