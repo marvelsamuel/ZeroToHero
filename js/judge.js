@@ -22,7 +22,7 @@
     gameMentorAnswers: { teamA: {}, teamB: {} },
     bibleTeam: null,
     individualTeamId: null,
-    soloTeamId: null, soloPoints: null,
+    soloTeamId: null, soloPoints: '', soloMentorAnswers: {},
     mentorId: null, mentorAnswers: {}
   };
 
@@ -207,11 +207,11 @@
     return wrap;
   }
 
-  // ---- SOLO CHALLENGE FORM (last-day, one team at a time, preset points) --
+  // ---- SOLO CHALLENGE FORM (last-day, one team at a time, custom points) --
   function renderSoloForm() {
     const wrap = el('div', { class: 'panel judge-shell' });
     wrap.appendChild(el('div', { class: 'panel-header' }, [el('h2', {}, ['🎯 Solo Challenge']), el('span', { class: 'eyebrow' }, ['LAST DAY GAMES'])]));
-    wrap.appendChild(el('p', { class: 'text-muted mt-8' }, ['For challenges where only one team performs at a time — pick the team, then their score based on performance.']));
+    wrap.appendChild(el('p', { class: 'text-muted mt-8' }, ['For challenges where only one team performs at a time — pick the team, then score their performance.']));
 
     wrap.appendChild(el('div', { class: 'field mt-16' }, [el('label', {}, ['Team']),
       el('div', { class: 'team-picker' }, lookups.teams.map((t) => teamButton(t, state.soloTeamId, () => { state.soloTeamId = t.teamId; renderActiveForm('solo'); })))
@@ -220,15 +220,25 @@
     const activity = el('input', { type: 'text', placeholder: 'e.g. Obstacle course' });
     wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Activity']), activity]));
 
-    wrap.appendChild(el('div', { class: 'field' }, [el('label', { class: 'text-center', style: 'display:block' }, ['Points (based on performance)']),
-      el('div', { class: 'flex gap-12', style: 'justify-content:center;flex-wrap:wrap;' },
-        lookups.solo.pointOptions.map((p) => el('button', {
-          type: 'button',
-          class: 'team-pick-btn' + (state.soloPoints === p ? ' selected' : ''),
-          style: state.soloPoints === p ? '--team-color:#2EC4B6' : '',
-          onclick: () => { state.soloPoints = p; renderActiveForm('solo'); }
-        }, [String(p) + ' pts'])))
-    ]));
+    const pointsInput = el('input', {
+      type: 'number', inputmode: 'numeric', placeholder: 'Enter points based on performance',
+      value: state.soloPoints
+    });
+    pointsInput.addEventListener('input', () => { state.soloPoints = pointsInput.value; });
+    wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Points (your call, based on performance)']), pointsInput]));
+
+    if (state.soloTeamId && mentorQuestions.length) {
+      const teamName = (lookups.teams.find((t) => t.teamId === state.soloTeamId) || {}).name || 'Team';
+      const totalNode = el('span', {}, ['0']);
+      const picker = renderMentorQuestionPicker(state.soloMentorAnswers, () => {
+        const capped = Math.min(computeMentorTotal(state.soloMentorAnswers), lookups.mentorBonusCap);
+        totalNode.textContent = String(capped);
+      });
+      wrap.appendChild(el('details', { class: 'panel mt-16', style: 'box-shadow:none;' }, [
+        el('summary', { style: 'cursor:pointer;font-weight:800;' }, ['🧑\u200d🏫 Optional: ' + teamName + ' mentor bonus (up to ' + lookups.mentorBonusCap + ' pts) — ', totalNode]),
+        picker
+      ]));
+    }
 
     const notes = el('textarea', { placeholder: 'Optional notes…' });
     wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Notes']), notes]));
@@ -236,8 +246,9 @@
     wrap.appendChild(el('button', {
       class: 'btn btn-green btn-lg btn-block', type: 'button',
       onclick: () => submitScore('submitSoloGameScore', {
-        teamId: state.soloTeamId, activity: activity.value, points: state.soloPoints, notes: notes.value
-      }, () => { state.soloTeamId = null; state.soloPoints = null; renderActiveForm('solo'); })
+        teamId: state.soloTeamId, activity: activity.value, points: Number(state.soloPoints), notes: notes.value,
+        mentorBonus: state.soloMentorAnswers
+      }, () => { state.soloTeamId = null; state.soloPoints = ''; state.soloMentorAnswers = {}; renderActiveForm('solo'); })
     }, ['✅ Save Score']));
 
     return wrap;
