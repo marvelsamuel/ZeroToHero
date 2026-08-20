@@ -60,9 +60,8 @@
     lastLeaderId = newLeaderId;
   }
 
-  async function renderStats() {
+  function renderStats(stats) {
     try {
-      const stats = await ZTH.api.call('getPublicStats', {});
       const strip = qs('#statStrip');
       strip.innerHTML = '';
       strip.appendChild(statCard(stats.leader ? stats.leader.name : '—', 'Current Leader'));
@@ -79,29 +78,32 @@
     ]);
   }
 
-  async function renderActivity() {
-    try {
-      const { activity } = await ZTH.api.call('getRecentActivity', { limit: 10 });
-      const feed = qs('#activityFeed');
-      feed.innerHTML = '';
-      if (!activity.length) {
-        feed.appendChild(el('div', { class: 'text-muted' }, ['No activity yet — the first score of the day is coming soon!']));
-        return;
-      }
-      activity.forEach((a) => {
-        feed.appendChild(el('div', { class: 'activity-item' }, [
-          el('span', { class: 'chip ' + a.type.toLowerCase() }, [a.type]),
-          el('span', {}, [a.text]),
-          el('span', { class: 'time' }, [timeAgo(a.timestamp)])
-        ]));
-      });
-    } catch (e) { /* non-critical */ }
+  function renderActivity(activity) {
+    const feed = qs('#activityFeed');
+    feed.innerHTML = '';
+    if (!activity.length) {
+      feed.appendChild(el('div', { class: 'text-muted' }, ['No activity yet — the first score of the day is coming soon!']));
+      return;
+    }
+    activity.forEach((a) => {
+      feed.appendChild(el('div', { class: 'activity-item' }, [
+        el('span', { class: 'chip ' + a.type.toLowerCase() }, [a.type]),
+        el('span', {}, [a.text]),
+        el('span', { class: 'time' }, [timeAgo(a.timestamp)])
+      ]));
+    });
   }
 
+  // One combined request per poll cycle instead of three separate ones —
+  // cuts round trips (and Apps Script cold-start overhead) by roughly two
+  // thirds compared to calling getLeaderboard/getPublicStats/getRecentActivity
+  // independently.
   async function refresh() {
     try {
-      const { teams } = await ZTH.api.call('getLeaderboard', {});
-      renderTeams(teams);
+      const snapshot = await ZTH.api.call('getPublicSnapshot', {});
+      renderTeams(snapshot.leaderboard.teams);
+      renderStats(snapshot.stats);
+      renderActivity(snapshot.activity.activity);
       qs('#lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
     } catch (err) {
       qs('#lastUpdated').textContent = 'Connection issue — retrying…';
@@ -110,10 +112,8 @@
 
   function startPolling() {
     refresh();
-    renderStats();
-    renderActivity();
     const seconds = (window.ZTH_CONFIG && window.ZTH_CONFIG.LEADERBOARD_REFRESH_SECONDS) || 8;
-    refreshTimer = setInterval(() => { refresh(); renderStats(); renderActivity(); }, seconds * 1000);
+    refreshTimer = setInterval(refresh, seconds * 1000);
   }
 
   function initProjectorToggle() {
