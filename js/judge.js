@@ -34,29 +34,37 @@
   };
 
   async function init() {
-    session = await ZTH.auth.requireSession(['Games Judge', 'Bible Judge', 'Individual Judge', 'Mentor Judge', 'Admin']);
-    if (!session) return;
+    // Read the local session directly instead of round-tripping to
+    // validateSession first — getJudgeBootstrap below validates the token
+    // AND the role server-side in the same call, so a separate upfront
+    // check would just be a wasted extra network round trip.
+    const localSession = ZTH.auth.getSession();
+    if (!localSession || !localSession.token) {
+      window.location.href = 'login.html';
+      return;
+    }
+    session = localSession;
 
     qs('#judgeName').textContent = session.displayName || session.username;
     qs('#judgeRole').textContent = ZTH.auth.roleLabel(session.role);
     qs('#logoutBtn').addEventListener('click', async () => { await ZTH.auth.logout(); window.location.href = 'login.html'; });
 
+    let bootstrap;
     try {
-      lookups = await ZTH.api.call('getScoringLookups', { token: session.token });
+      // One combined call instead of three sequential ones (session check +
+      // teams/config lookup + mentor questions) — cuts page-load latency
+      // roughly to a third of what it was.
+      bootstrap = await ZTH.api.call('getJudgeBootstrap', { token: session.token });
     } catch (e) {
-      toast('Could not load teams — refresh to try again.', 'error');
+      ZTH.auth.clearSession();
+      window.location.href = 'login.html';
       return;
     }
 
-    // Mentor questions are needed for the Mentor form AND for the in-game
-    // mentor bonus on the Games form, so fetch them for any role that might
-    // touch either.
-    const needsMentorQuestions = ['Mentor Judge', 'Games Judge', 'Admin'].indexOf(session.role) !== -1;
-    if (needsMentorQuestions) {
-      try { mentorQuestions = (await ZTH.api.call('getMentorQuestions', { token: session.token })).questions; } catch (e) { /* ignore */ }
-    }
+    lookups = bootstrap.lookups;
+    mentorQuestions = bootstrap.mentorQuestions || [];
 
-    const forms = buildFormList(session.role);
+    const forms = buildFormList(bootstrap.role || session.role);
     setupTabs(forms);
     renderActiveForm(forms[0]);
   }
@@ -155,7 +163,7 @@
     const wrap = el('div', { class: 'panel judge-shell' });
     wrap.appendChild(el('div', { class: 'panel-header' }, [el('h2', {}, ['🏆 Game Score']), el('span', { class: 'eyebrow' }, ['GAMES'])]));
     wrap.appendChild(fixedPointsBadge(lookups.defaults.game, 'games'));
-    wrap.appendChild(el('p', { class: 'text-muted text-center', style: 'margin-top:-8px;' }, ['On a draw, both teams get the full amount.']));
+    wrap.appendChild(el('p', { class: 'text-muted text-center', style: 'margin-top:-8px;' }, ['On a draw, both teams get ' + lookups.defaults.draw + ' points each.']));
 
     wrap.appendChild(el('div', { class: 'field' }, [el('label', {}, ['Team A']),
       el('div', { class: 'team-picker' }, lookups.teams.map((t) => teamButton(t, state.gameTeamA, () => { state.gameTeamA = t.teamId; state.gameWinner = null; renderActiveForm('game'); })))
